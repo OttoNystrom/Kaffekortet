@@ -1,0 +1,100 @@
+Vad gör funktionerna?
+
+draw_line --> Ritar en linje
+
+clear_screen --> Tömmer skärmen på text och skriver ut det som anges i printen
+
+is_it_int --> Checkar ifall svaret på en fråga är en siffra och skickar
+tillbaka värdet ifall det är. Annars ställs frågan om till svaret är en siffra
+
+yes_or_no --> Ställer en fråga som agnes i kallelsen och går inte tillbaka
+förrens svaret är ja eller nej.
+
+print_csv_file --> Använder sig av "r" i open-funktionen för att öppna filen
+i ett "read" (läs) läge. Skapar sedan en "reader" som är en sorts funktion som
+läser igenom csv-filen med hjälp av en for-loop. Funktionen printar även ut
+det som angivits vid kallelsen
+
+delete_user_in_csv_file --> Snabbt och enkelt så tar denna funktion bort en
+användare ur systemet... Funktionen skapar en reader (se funktionen "print_csv_file")
+läser igenom filen och lägger till data i en tom lista (se listan "L") tills dess att datan
+stämmer med den som ska tas bort. Då hoppar funktionen över indexet och sparar därmed inte den datan.
+Detta görs genom hela filen och den totala listan (hela csv-filen) ersätts med listan "L".
+
+update_user_data --> Uppdaterar ett visst värde för en vissa användare. Du måste ange
+vilken typ av data du vill ändra samt den nya respektive gammla datan. "i" motsvarar rubriken
+för varje rad. Så om du exempelvis ska söka igenom och byta ut en kod så är det indexet 0, då
+rubriken "code" har indexet 0. Vi öppnar filen och skapar en reader (se print_to_csv_file),
+läser igenom datan tills den som angets "gammla datan" stämmer överens med den i for-loopen.
+Den "nya datan" sätts då in iställer för den gammla genom att vi skapar en writer.
+En writer fungerar genom att öppna csv-filen i "w", "w+" läge, samt kalla på funktionen.
+Det den gör är att då "skriva över" den gammla listan i "user" med den nya listan.
+Den nya listan innehåller exakt samma värde som tidigare förutom i indexet vi uppdaterat.
+
+check_if_already_in_file --> Funktionen behöver en lista! En i listan så ska det dessutom finnas
+en lista med all data. (exempelvis såhär: check_if_already_in_file([data_to_check]) där data_to_check =
+["code", "email", "name", "password", "value"]). För att se ifall datan finns så bytar du endast
+ut stringen mot datan. Ex. ["313131313131", "email", "name", "password", "value"].
+Programmet hittar bara då "31313131313131" och inte "email" etc.
+
+add_account --> Adderar ett konto till databasen, men endast ifall det är ett nytt och unikt konto.
+Detta görs genom att mata in data för namn, epost samt ett lösenord. Just nu måste
+Du även mata in en QR-kod, men det är någonting som ska göras automatiskt vid ett senare
+skede. All inmatad data sammanställs sedan i en lista som skickas till "check_if_already_in_file"
+för att se ifall datan redan finns i csv-filen. Ifall datan redan finns i filen skickas du tillbaka.
+Ifall datan inte finns i filen så läggs den till genom att vi skapar en writer och öppnar filen i "a"-läge.
+"a" står för append, vilket betyder att den lägger till en ny rad med den inmatade datan vi har i listan
+som anges. För att spara datan måste vi sedan stänga filen genom funktionen file.close().
+
+change_password --> Ändrar lösenordet för en given användare. När du kallar på
+funktionen så ska du ange "username", vilket motsvarar email-adressen för
+användaren som ska ändra sitt lösenord. Med hjälp av en for-loop så går programmet igenom
+email-adresserna tills den angivna hittats. En verifiering av det tidigare lösenordet görs genom
+att mata in det gammla och jämföra det med de indexet vid den angivna email-adressen.
+När man matat in rätt lösenord så kan man välja ett nytt, dock måste det verifieras genom
+att skriva in det en gång till. Lösenordet uppdateras sedan med hjälp av "update_user_data"
+då vi matar in "password", det gammla lösenordet samt det nya lösenordet.
+
+change_qr_code --> Du kan ändra QR-koden för ett konto genom att mata in den gammla qr-koden.
+Vi söker då med hjälp av en reader (se "print_to_csv") igenom dokumentet tills QR-koden hittats.
+Den ersätts då med en QR-kod du i nuläget måste mata in själv, men som senare ska gå helt automatiskt.
+Vi uppdaterar datan med häjlp av "update_user_data"-funktionen.
+
+update_all_qr_codes --> Uppdaterar alla qr-koder i både databasen samt i mappen där alla jpeg-bilder sparas. 
+Programmet skapar en reader som går igenom alla rader i databasen och uppdaterar raden under "code" med en ny kod. 
+Vi tar sedan bort filen och skapar en ny med den uppdaterade koden. Detta görs tills for-loopen gått igenom hela csv filen. 
+
+generate_qr_code --> OBS!!! Variabeln file_name måste innehålla den lokala adressen till där du vill
+lägga till filen för qr-koden. OBS!!! Först skapas en tom lista som ska motsvara datan som ska lagras i
+qr-koden. Sedan genereras tio olika siffror som ska motsvara den koden du har. Ifall den mot all förmodan
+redan finns i programmet så ska vi köra om funktionen. Annars används en funktion som anger storleken på qr-koden
+samt lägger till vår kod i datafältet hos "bilden/qr-koden". Vi ändrar sedan färg för att den bättre ska passa in med
+temat för tycho braheskolan. Sist men inte minst så sparar vi den nu nya jpeg-bilden, som motsvarar
+QR-koden, i adressen vi skriver in i fältet.  
+
+start_menu_main --> Detta är den första menyn du möts av där du väljer ifall du vill logga in
+eller skapa ett konto.
+
+start_menu_admin --> Detta är huvudmenyn för admin. Här kan du i en huvudmeny välja mellan alla olika funktioner.
+Inputen jämförs senare med de olika alternativ som finns för att skicka vidara användaren till rätt funktion.
+Det används en while loop för att se till att inputen är i definitionsmängden för menyerna.
+
+start_menu_user --> Behöver email-adressen för användaren. Denna är lik "start_menu_admin" då du får välja ifrån en meny
+för att sedan slussas vidare till respektive funktion. Detta gäller dock inte för bytet av qr-kod då den ersätts automatiskt,
+på samma sätt som i "change_qr_code"-funktionen fast direkt. Detta då vi har användaren redan och vet platsen i csv-filen.
+
+back_to_main_menu_admin --> Frågar användaren ifall den vill tillbaka till admin-huvudmenyn. ("start_main_menu_admin").
+OBS! Kom ihåg att denna skickar användaren direkt till admin-menyn, så ifall den kallas på för en vanlig användare
+så kan denne få tillgång till admin-möjligheter.
+
+back_to_main_menu_user --> Funktionen kräver email-adressen för användaren då den skickas direkt till "start_menu_user".
+Funktionen fungerar nästan exakt som de andra menyerna fast med andra adresser vid rätt input.
+
+inlogg_username --> Ser ifall användarnamnet du skriver in när du loggar in finns i databasen.
+
+inlogg_password --> Ser ifall lösenordet är korrekt jämfört med det i databasen. Använder sig av en
+while loop som skörs tills rätt lösenord matats in. Kanske någonting som kan förändras i framtiden för att
+minska risken för att någon annan kommer in på ens konto???
+
+user_menu_info --> Funktionen kräver email-adressen för en användare då den skriver ut den almänna datan för just den användaren.
+Detta är; QR-koden, antalet koppar kvar i saldot, email-adressen samt lösenordet (<-- Kanske tas bort?).
